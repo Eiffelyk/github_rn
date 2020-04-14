@@ -3,6 +3,8 @@ import {createStackNavigator} from 'react-navigation-stack';
 import WelcomePage from '../page/WelcomePage';
 import HomePage from '../page/HomePage';
 import DetailPage from '../page/DetailPage';
+import FetchDemoPage from '../page/FetchDemoPage';
+import AsyncStoreDemoPage from '../page/AsyncStoreDemoPage';
 
 const InitNavigator = createStackNavigator({
   WelcomePage: {
@@ -21,6 +23,12 @@ const MainNavigator = createStackNavigator({
   },
   DetailPage: {
     screen: DetailPage,
+  },
+  FetchDemoPage: {
+    screen: FetchDemoPage,
+  },
+  AsyncStoreDemoPage: {
+    screen: AsyncStoreDemoPage,
   },
 });
 

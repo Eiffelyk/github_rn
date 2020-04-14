@@ -9,6 +9,7 @@ export default class PopularPage extends Component {
     super(props);
     this.tabNames = ['Java', 'Android', 'iOS', 'React', 'React Native', 'PHP'];
   }
+
   _getTabs() {
     const tabs = {};
     this.tabNames.forEach((item, index) => {
@@ -21,6 +22,7 @@ export default class PopularPage extends Component {
     });
     return tabs;
   }
+
   _TopNavigator() {
     return createAppContainer(
       createMaterialTopTabNavigator(this._getTabs(), {
@@ -37,6 +39,7 @@ export default class PopularPage extends Component {
       }),
     );
   }
+
   render() {
     const TopBar = this._TopNavigator();
     return (
@@ -46,6 +49,7 @@ export default class PopularPage extends Component {
     );
   }
 }
+
 class PopularTab extends Component {
   render() {
     const {navigation} = this.props;
@@ -58,6 +62,19 @@ class PopularTab extends Component {
             NavigatorUtil.goPage({}, 'DetailPage');
           }}>
           PopularTab
+        </Text>
+
+        <Text
+          onPress={() => {
+            NavigatorUtil.goPage({}, 'FetchDemoPage');
+          }}>
+          Fetch Demo
+        </Text>
+        <Text
+          onPress={() => {
+            NavigatorUtil.goPage({}, 'AsyncStoreDemoPage');
+          }}>
+          AsyncStoreDemoPage Demo
         </Text>
         <Button
           title={'修改成蓝色'}
@@ -74,6 +91,7 @@ class PopularTab extends Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
