@@ -76,6 +76,12 @@ class PopularTab extends Component {
           }}>
           AsyncStoreDemoPage Demo
         </Text>
+        <Text
+          onPress={() => {
+            NavigatorUtil.goPage({}, 'DataStoreDemoPage');
+          }}>
+          AsyncStoreDemoPage Demo
+        </Text>
         <Button
           title={'修改成蓝色'}
           onPress={() =>
