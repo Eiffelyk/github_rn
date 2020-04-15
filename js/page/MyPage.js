@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, Button, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import actions from '../action';
+import NavigatorUtil from '../navigator/NavigatorUtil';
 class MyPage extends Component {
   render() {
     const {navigation} = this.props;
@@ -11,6 +12,42 @@ class MyPage extends Component {
         <Button
           title={'修改主题灰色'}
           onPress={() => this.props.onThemeChange('gray')}
+        />
+        <Text
+          onPress={() => {
+            NavigatorUtil.goPage({}, 'DetailPage');
+          }}>
+          PopularTab
+        </Text>
+
+        <Text
+          onPress={() => {
+            NavigatorUtil.goPage({}, 'FetchDemoPage');
+          }}>
+          Fetch Demo
+        </Text>
+        <Text
+          onPress={() => {
+            NavigatorUtil.goPage({}, 'AsyncStoreDemoPage');
+          }}>
+          AsyncStoreDemoPage Demo
+        </Text>
+        <Text
+          onPress={() => {
+            NavigatorUtil.goPage({}, 'DataStoreDemoPage');
+          }}>
+          DataStoreDemoPage Demo
+        </Text>
+        <Button
+          title={'修改成蓝色'}
+          onPress={() =>
+            navigation.setParams({
+              theme: {
+                tintColor: 'blue',
+                updateTime: new Date().getTime(),
+              },
+            })
+          }
         />
       </View>
     );
