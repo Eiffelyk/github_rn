@@ -12,6 +12,7 @@ import {createAppContainer} from 'react-navigation';
 import {connect} from 'react-redux';
 import actions from '../action/index';
 import NavigatorUtil from '../navigator/NavigatorUtil';
+import PopularItem from '../common/PopularItem';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -68,26 +69,35 @@ class PopularTab extends Component {
     const {tabLabel} = this.props;
     this.storeName = tabLabel;
   }
+
   componentDidMount() {
     this.loadData();
   }
+
   loadData() {
     const {popularRefresh} = this.props;
     const url = this.genFetchUrl();
     popularRefresh(this.storeName, url);
   }
+
   genFetchUrl(key) {
     return URL + key + QUERY_STR;
   }
+
   renderItem(data) {
     return (
-      <View style={{backgroundColor: '#F00'}}>
-        <Text style={{backgroundColor: '#FF0'}}>
-          {JSON.stringify(data.item)}
-        </Text>
-      </View>
+      <PopularItem
+        item={data.item}
+        onSelect={() => {
+          console.log('PopularItem is select');
+        }}
+        onFavorite={() => {
+          console.log('PopularItem is onFavorite');
+        }}
+      />
     );
   }
+
   render() {
     const {popular} = this.props;
     let store = popular[this.storeName];
@@ -98,7 +108,7 @@ class PopularTab extends Component {
       };
     }
     return (
-      <View style={styles.container}>
+      <View style={styles.container_tab}>
         <FlatList
           data={store.items}
           renderItem={data => this.renderItem(data)}
@@ -118,6 +128,7 @@ class PopularTab extends Component {
     );
   }
 }
+
 const mapStateToProps = state => ({
   popular: state.popular,
 });
@@ -134,6 +145,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 30,
+  },
+  container_tab: {
+    flex: 1,
   },
   welcome: {
     fontSize: 40,
