@@ -2,16 +2,16 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  Button,
   FlatList,
   StyleSheet,
   RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createAppContainer} from 'react-navigation';
 import {connect} from 'react-redux';
 import actions from '../action/index';
-import NavigatorUtil from '../navigator/NavigatorUtil';
+import Toast from 'react-native-easy-toast';
 import PopularItem from '../common/PopularItem';
 
 const URL = 'https://api.github.com/search/repositories?q=';
@@ -62,7 +62,7 @@ export default class PopularPage extends Component {
     );
   }
 }
-
+const pageSize = 10;
 class PopularTab extends Component {
   constructor(props) {
     super(props);
@@ -74,12 +74,37 @@ class PopularTab extends Component {
     this.loadData();
   }
 
-  loadData() {
-    const {popularRefresh} = this.props;
-    const url = this.genFetchUrl();
-    popularRefresh(this.storeName, url);
+  loadData(loadMore) {
+    const {popularRefresh, popularLoadMore} = this.props;
+    const store = this._store();
+    const url = this.genFetchUrl(this.storeName);
+    if (loadMore) {
+      popularLoadMore(
+        this.storeName,
+        ++store.pageIndex,
+        pageSize,
+        store.items,
+        callback => {
+          this.toast.show('没数据了');
+        },
+      );
+    } else {
+      popularRefresh(this.storeName, url, pageSize);
+    }
   }
-
+  _store() {
+    const {popular} = this.props;
+    let store = popular[this.storeName];
+    if (!store) {
+      store = {
+        items: [],
+        isLoading: false,
+        projectModes: [],
+        hiddenLoadingMore: true,
+      };
+    }
+    return store;
+  }
   genFetchUrl(key) {
     return URL + key + QUERY_STR;
   }
@@ -97,20 +122,20 @@ class PopularTab extends Component {
       />
     );
   }
-
+  footerComponent() {
+    return this._store().hiddenLoadingMore ? null : (
+      <View style={styles.footer}>
+        <ActivityIndicator style={styles.footerActivityIndicator} />
+        <Text>加载更多</Text>
+      </View>
+    );
+  }
   render() {
-    const {popular} = this.props;
-    let store = popular[this.storeName];
-    if (!store) {
-      store = {
-        items: [],
-        isLoading: false,
-      };
-    }
+    let store = this._store();
     return (
       <View style={styles.container_tab}>
         <FlatList
-          data={store.items}
+          data={store.projectModes}
           renderItem={data => this.renderItem(data)}
           keyExtractor={item => '' + item.id}
           refreshControl={
@@ -123,7 +148,19 @@ class PopularTab extends Component {
               tintColor={THEME_COLOR}
             />
           }
+          ListFooterComponent={() => this.footerComponent()}
+          onEndReached={() => {
+            if (this.canLoadMore) {
+              this.loadData(true);
+              this.canLoadMore = false;
+            }
+          }}
+          onEndReachedThreshold={0.5}
+          onMomentumScrollBegin={() => {
+            this.canLoadMore = true;
+          }}
         />
+        <Toast ref={toast => (this.toast = toast)} position={'center'} />
       </View>
     );
   }
@@ -134,8 +171,18 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  popularRefresh: (storeName, url) =>
-    dispatch(actions.onPopularRefresh(storeName, url)),
+  popularRefresh: (storeName, url, pageSize) =>
+    dispatch(actions.onPopularRefresh(storeName, url, pageSize)),
+  popularLoadMore: (storeName, pageIndex, pageSize, dataArray, callback) =>
+    dispatch(
+      actions.onPopularLoadMore(
+        storeName,
+        pageIndex,
+        pageSize,
+        dataArray,
+        callback,
+      ),
+    ),
 });
 const PopularTabPage = connect(
   mapStateToProps,
@@ -163,5 +210,12 @@ const styles = StyleSheet.create({
   labelStyle: {
     fontSize: 13,
     marginVertical: 6,
+  },
+  footer: {
+    alignItems: 'center',
+  },
+  footerActivityIndicator: {
+    color: 'red',
+    margin: 10,
   },
 });

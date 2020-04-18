@@ -19,21 +19,25 @@ const defaultState = {};
  */
 export default function onAction(state = defaultState, action) {
   switch (action.type) {
-    case Types.POPULAR_REFRESH_SUCCESS:
-      return {
-        ...state,
-        [action.storeName]: {
-          ...state[action.storeName],
-          items: action.items,
-          isLoading: false,
-        },
-      };
     case Types.POPULAR_REFRESH:
       return {
         ...state,
         [action.storeName]: {
           ...state[action.storeName],
           isLoading: true,
+          hiddenLoadingMore: true,
+        },
+      };
+    case Types.POPULAR_REFRESH_SUCCESS:
+      return {
+        ...state,
+        [action.storeName]: {
+          ...state[action.storeName],
+          items: action.items,
+          projectModes: action.projectModes,
+          isLoading: false,
+          hiddenLoadingMore: false,
+          pageIndex: action.pageIndex,
         },
       };
     case Types.POPULAR_REFRESH_FAIL:
@@ -42,6 +46,26 @@ export default function onAction(state = defaultState, action) {
         [action.storeName]: {
           ...state[action.storeName],
           isLoading: false,
+        },
+      };
+    case Types.POPULAR_LOAD_MORE_SUCCESS:
+      return {
+        ...state,
+        [action.storeName]: {
+          ...state[action.storeName],
+          items: action.items,
+          projectModes: action.projectModes,
+          hiddenLoadingMore: false,
+          pageIndex: action.pageIndex,
+        },
+      };
+    case Types.POPULAR_LOAD_MORE_FAIL:
+      return {
+        ...state,
+        [action.storeName]: {
+          ...state[action.storeName],
+          hiddenLoadingMore: true,
+          pageIndex: action.pageIndex,
         },
       };
     default:
