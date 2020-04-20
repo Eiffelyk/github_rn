@@ -13,6 +13,7 @@ import {connect} from 'react-redux';
 import actions from '../action/index';
 import Toast from 'react-native-easy-toast';
 import PopularItem from '../common/PopularItem';
+import NavigationBar from '../common/NavigationBar';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -55,8 +56,20 @@ export default class PopularPage extends Component {
 
   render() {
     const TopBar = this._TopNavigator();
+    let statusBar = {
+      backgroundColor: THEME_COLOR,
+      barStyle: 'light-content',
+    };
+    let NavigationBarA = (
+      <NavigationBar
+        title={'最热'}
+        statusBar={statusBar}
+        style={{backgroundColor: THEME_COLOR}}
+      />
+    );
     return (
       <View style={styles.container}>
+        {NavigationBarA}
         <TopBar />
       </View>
     );
@@ -193,7 +206,6 @@ const PopularTabPage = connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 30,
   },
   container_tab: {
     flex: 1,
