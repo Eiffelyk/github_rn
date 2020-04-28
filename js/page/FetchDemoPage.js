@@ -25,7 +25,7 @@ export default class FetchDemoPage extends Component {
       })
       .catch(e => {
         this.setState({
-          showtText: e,
+          showText: e,
         });
       });
   }

@@ -9,12 +9,12 @@ import {
   Platform,
   DeviceInfo,
 } from 'react-native';
-const NAV_BAR_HEIGHT_IOS = 44; //导航栏在iOS中的高度
+const NAV_BAR_HEIGHT_IOS = 55; //导航栏在iOS中的高度
 const NAV_BAR_HEIGHT_ANDROID = 50; //导航栏在Android中的高度
 const NAV_BAR_HEIGHT =
   Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID;
 const STATUS_BAR_HEIGHT =
-  Platform.OS !== 'ios' || DeviceInfo.isIPhoneX_deprecated ? 0 : 20; //状态栏的高度
+  Platform.OS === 'ios' && DeviceInfo.isIPhoneX_deprecated ? 20 : 0; //状态栏的高度
 const StatusBarShape = {
   barStyle: PropTypes.oneOf(['light-content', 'default']),
   hidden: PropTypes.boolean,

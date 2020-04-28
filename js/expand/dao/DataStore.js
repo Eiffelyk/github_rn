@@ -1,12 +1,14 @@
 import AsyncStorage from '@react-native-community/async-storage';
-
+import Trending from 'GitHubTrending';
+export const FLAG_STORAGE = {popular: 'popular', trending: 'trending'};
 export default class DataStore {
   /***
    * 获取数据，包含缓存机制
    * @param url
+   * @param flag
    * @returns {Promise<R>}
    */
-  fetchData(url) {
+  fetchData(url, flag) {
     return new Promise((resolve, reject) => {
       this.fetchDataFromLocal(url)
         .then(wrapData => {
@@ -14,7 +16,7 @@ export default class DataStore {
           if (wrapData && this._checkTimestampValid(wrapData.timestamp)) {
             resolve(wrapData);
           } else {
-            this.fetchDataFromNet(url)
+            this.fetchDataFromNet(url, flag)
               .then(data => {
                 resolve(this._warpData(data));
               })
@@ -24,7 +26,7 @@ export default class DataStore {
           }
         })
         .catch(e => {
-          this.fetchDataFromNet(url)
+          this.fetchDataFromNet(url, flag)
             .then(data => {
               resolve(this._warpData(data));
             })
@@ -38,25 +40,42 @@ export default class DataStore {
   /***
    * 网络请求
    * @param url
+   * @param flag
    * @returns {Promise<R>}
    */
-  fetchDataFromNet(url) {
+  fetchDataFromNet(url, flag) {
     return new Promise((resolve, reject) => {
-      fetch(url)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-          throw new Error('net not work');
-        })
-        .then(responseText => {
-          this.saveData(url, responseText);
-          resolve(responseText);
-        })
-        .catch(e => {
-          reject(e);
-          console.log(e.toString());
-        });
+      debugger;
+      if (flag === FLAG_STORAGE.popular) {
+        fetch(url)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('net not work');
+          })
+          .then(responseText => {
+            this.saveData(url, responseText);
+            resolve(responseText);
+          })
+          .catch(e => {
+            reject(e);
+            console.log(e.toString());
+          });
+      } else {
+        new Trending('fd82d1e882462e23b8e88aa82198f166')
+          .fetchTrending(url)
+          .then(items => {
+            if (!items) {
+              throw new Error('responseData is null');
+            }
+            this.saveData(url, items);
+            resolve(items);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      }
     });
   }
 

@@ -9,15 +9,15 @@ import {handlerData} from '../ActionUtil';
  * @param pageSize
  * @returns {function(...[*]=)}
  */
-export function onPopularRefresh(storeName, url, pageSize) {
+export function onTrendingRefresh(storeName, url, pageSize) {
   return dispatch => {
-    dispatch({type: Types.POPULAR_REFRESH, storeName: storeName});
+    dispatch({type: Types.TRENDING_REFRESH, storeName: storeName});
     let dataStore = new DataStore();
     dataStore
-      .fetchData(url, FLAG_STORAGE.popular)
+      .fetchData(url, FLAG_STORAGE.trending)
       .then(data => {
         handlerData(
-          Types.POPULAR_REFRESH_SUCCESS,
+          Types.TRENDING_REFRESH_SUCCESS,
           dispatch,
           storeName,
           data,
@@ -26,7 +26,7 @@ export function onPopularRefresh(storeName, url, pageSize) {
       })
       .catch(error => {
         dispatch({
-          type: Types.POPULAR_REFRESH_FAIL,
+          type: Types.TRENDING_REFRESH_FAIL,
           storeName,
           error,
         });
@@ -34,7 +34,7 @@ export function onPopularRefresh(storeName, url, pageSize) {
   };
 }
 
-export function onPopularLoadMore(
+export function onTrendingLoadMore(
   storeName,
   pageIndex,
   pageSize,
@@ -49,7 +49,7 @@ export function onPopularLoadMore(
           callback('no more');
         }
         dispatch({
-          type: Types.POPULAR_LOAD_MORE_FAIL,
+          type: Types.TRENDING_LOAD_MORE_FAIL,
           storeName,
           error: 'no more 1',
           pageIndex: --pageIndex,
@@ -61,7 +61,7 @@ export function onPopularLoadMore(
             ? dataArray.length
             : pageSize * pageIndex;
         dispatch({
-          type: Types.POPULAR_LOAD_MORE_SUCCESS,
+          type: Types.TRENDING_LOAD_MORE_SUCCESS,
           storeName,
           items: dataArray,
           pageIndex,
