@@ -10,7 +10,7 @@ import {
   DeviceInfo,
 } from 'react-native';
 const NAV_BAR_HEIGHT_IOS = 55; //导航栏在iOS中的高度
-const NAV_BAR_HEIGHT_ANDROID = 50; //导航栏在Android中的高度
+const NAV_BAR_HEIGHT_ANDROID = 40; //导航栏在Android中的高度
 const NAV_BAR_HEIGHT =
   Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID;
 const STATUS_BAR_HEIGHT =

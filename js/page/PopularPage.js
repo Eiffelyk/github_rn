@@ -14,6 +14,7 @@ import actions from '../action/index';
 import Toast from 'react-native-easy-toast';
 import PopularItem from '../common/PopularItem';
 import NavigationBar from '../common/NavigationBar';
+import NavigatorUtil from '../navigator/NavigatorUtil';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -123,11 +124,13 @@ class PopularTab extends Component {
   }
 
   renderItem(data) {
+    const item = data.item;
     return (
       <PopularItem
-        item={data.item}
+        item={item}
         onSelect={() => {
           console.log('PopularItem is select');
+          NavigatorUtil.goPage({projectModel: item}, 'DetailPage');
         }}
         onFavorite={() => {
           console.log('PopularItem is onFavorite');

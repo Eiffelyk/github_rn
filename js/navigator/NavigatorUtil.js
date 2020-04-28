@@ -8,6 +8,13 @@ export default class NavigatorUtil {
     }
   }
   /**
+   * 返回上一页
+   * @param navigation
+   */
+  static goBack(navigation) {
+    navigation.goBack();
+  }
+  /**
    *跳转到首页
    * @param params
    */

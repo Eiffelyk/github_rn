@@ -18,7 +18,8 @@ import NavigationBar from '../common/NavigationBar';
 import TrendingItem from '../common/TrendingItem';
 import TrendingDialog, {timeSpans} from '../common/TrendingDialog';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-const URL = 'https://github.com/trending/';
+import NavigatorUtil from '../navigator/NavigatorUtil';
+export const TRENDING_URL = 'https://github.com/trending/';
 const THEME_COLOR = '#F00';
 const EVENT_TYPE_TIME_SPAN_CHANGE = 'EVENT_TYPE_TIME_SPAN_CHANGE';
 export default class TrendingPage extends Component {
@@ -183,17 +184,19 @@ class TrendingTab extends Component {
   }
   genFetchUrl(key) {
     if (key === 'ALL') {
-      return URL + '?' + this.timeSpan.selectTime;
+      return TRENDING_URL + '?' + this.timeSpan.selectTime;
     } else {
-      return URL + key + '?' + this.timeSpan.selectTime;
+      return TRENDING_URL + key + '?' + this.timeSpan.selectTime;
     }
   }
 
   renderItem(data) {
+    const item = data.item;
     return (
       <TrendingItem
-        item={data.item}
+        item={item}
         onSelect={() => {
+          NavigatorUtil.goPage({projectModel: item}, 'DetailPage');
           console.log('TrendingItem is select');
         }}
         onFavorite={() => {

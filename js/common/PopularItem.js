@@ -14,7 +14,7 @@ export default class PopularItem extends Component {
         activeOpacity={1}
         onPress={() => {
           console.log('FavoriteButton is press');
-          this.props.onFavorite;
+          this.props.onFavorite();
         }}>
         <FontAwesome name={'star-o'} size={26} style={{color: 'red'}} />
       </TouchableOpacity>
@@ -25,7 +25,7 @@ export default class PopularItem extends Component {
         activeOpacity={1}
         onPress={() => {
           console.log('PopularItem is press');
-          this.props.onSelect;
+          this.props.onSelect();
         }}>
         <Text style={style.full_name}>{item.full_name}</Text>
         <Text style={style.cell_description}>{item.description}</Text>
