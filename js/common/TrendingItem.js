@@ -1,50 +1,40 @@
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
-import React, {Component} from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import React from 'react';
+import BaseItem from './BaseItem';
 
-export default class TrendingItem extends Component {
+export default class TrendingItem extends BaseItem {
   render() {
-    let {item} = this.props;
+    let {projectModel} = this.props;
+    let {item} = projectModel;
     if (!item) {
       return null;
     }
-    let FavoriteButton = (
-      <TouchableOpacity
-        style={{padding: 6}}
-        activeOpacity={1}
-        onPress={() => {
-          console.log('FavoriteButton is press');
-          this.props.onFavorite();
-        }}>
-        <FontAwesome name={'star-o'} size={26} style={{color: 'red'}} />
-      </TouchableOpacity>
-    );
     return (
       <TouchableOpacity
-        style={style.cell_container}
-        activeOpacity={1}
+        activeOpacity={0.7}
         onPress={() => {
-          console.log('PopularItem is press');
-          this.props.onSelect();
+          this.onItemSelect();
         }}>
-        <Text style={style.full_name}>{item.fullName}</Text>
-        <Text style={style.cell_description}>{item.description}</Text>
-        <Text style={style.cell_description}>{item.meta}</Text>
-        <View style={style.cell_row}>
-          <View style={{flexDirection: 'row'}}>
-            <Text>Build:</Text>
-            {item.contributors.map((result, i, arr) => {
-              return (
-                <Image
-                  key={i}
-                  style={{height: 22, width: 22, margin: 2}}
-                  source={{uri: arr[i]}}
-                />
-              );
-            })}
+        <View style={style.cell_container}>
+          <Text style={style.full_name}>{item.fullName}</Text>
+          <Text style={style.cell_description}>{item.description}</Text>
+          <Text style={style.cell_description}>{item.meta}</Text>
+          <View style={style.cell_row}>
+            <View style={{flexDirection: 'row'}}>
+              <Text>Build:</Text>
+              {item.contributors.map((result, i, arr) => {
+                return (
+                  <Image
+                    key={i}
+                    style={{height: 22, width: 22, margin: 2}}
+                    source={{uri: arr[i]}}
+                  />
+                );
+              })}
+            </View>
+            <Text>{'Star:' + item.starCount}</Text>
+            {this._favoriteButton()}
           </View>
-          <Text>{'Star:' + item.starCount}</Text>
-          {FavoriteButton}
         </View>
       </TouchableOpacity>
     );

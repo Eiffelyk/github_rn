@@ -12,7 +12,7 @@ export default class DataStore {
     return new Promise((resolve, reject) => {
       this.fetchDataFromLocal(url)
         .then(wrapData => {
-          console.log('wrapData==' + wrapData);
+          console.log('wrapData==' + JSON.stringify(wrapData));
           if (wrapData && this._checkTimestampValid(wrapData.timestamp)) {
             resolve(wrapData);
           } else {

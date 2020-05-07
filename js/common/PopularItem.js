@@ -1,44 +1,34 @@
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
-import React, {Component} from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import React from 'react';
+import BaseItem from './BaseItem';
 
-export default class PopularItem extends Component {
+export default class PopularItem extends BaseItem {
   render() {
-    let {item} = this.props;
+    let {projectModel} = this.props;
+    let {item} = projectModel;
     if (!item && !item.owner) {
       return null;
     }
-    let FavoriteButton = (
-      <TouchableOpacity
-        style={{padding: 6}}
-        activeOpacity={1}
-        onPress={() => {
-          console.log('FavoriteButton is press');
-          this.props.onFavorite();
-        }}>
-        <FontAwesome name={'star-o'} size={26} style={{color: 'red'}} />
-      </TouchableOpacity>
-    );
     return (
       <TouchableOpacity
-        style={style.cell_container}
-        activeOpacity={1}
+        activeOpacity={0.7}
         onPress={() => {
-          console.log('PopularItem is press');
-          this.props.onSelect();
+          this.onItemSelect();
         }}>
-        <Text style={style.full_name}>{item.full_name}</Text>
-        <Text style={style.cell_description}>{item.description}</Text>
-        <View style={style.cell_row}>
-          <View style={{flexDirection: 'row'}}>
-            <Text>Author:</Text>
-            <Image
-              style={{height: 22, width: 22}}
-              source={{uri: item.owner.avatar_url}}
-            />
+        <View style={style.cell_container}>
+          <Text style={style.full_name}>{item.full_name}</Text>
+          <Text style={style.cell_description}>{item.description}</Text>
+          <View style={style.cell_row}>
+            <View style={{flexDirection: 'row'}}>
+              <Text>Author:</Text>
+              <Image
+                style={{height: 22, width: 22}}
+                source={{uri: item.owner.avatar_url}}
+              />
+            </View>
+            <Text>{'Star:' + item.stargazers_count}</Text>
+            {this._favoriteButton()}
           </View>
-          <Text>{'Star:' + item.stargazers_count}</Text>
-          {FavoriteButton}
         </View>
       </TouchableOpacity>
     );

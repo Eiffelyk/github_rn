@@ -5,19 +5,25 @@ import ViewUtil from '../util/ViewUtil';
 import NavigatorUtil from '../navigator/NavigatorUtil';
 import WebView from 'react-native-webview';
 import BackPressComponent from '../common/BackPressComponent';
+import FavoriteDao from '../expand/dao/FavoriteDao';
+import {FLAG_STORAGE} from '../expand/dao/DataStore';
+import FavoriteUtil from '../util/FavoriteUtil';
 const TRENDING_URL = 'https://github.com/';
 export default class DetailPage extends Component {
   constructor(props) {
     super(props);
     this.params = this.props.navigation.state.params;
-    const {projectModel} = this.params;
-    this.url = projectModel.html_url || TRENDING_URL + projectModel.fullName;
-    const title = projectModel.full_name || projectModel.fullName;
+    const {projectModel, flag} = this.params;
+    this.url =
+      projectModel.item.html_url || TRENDING_URL + projectModel.item.fullName;
+    const title = projectModel.item.full_name || projectModel.item.fullName;
+    const isFavorite = projectModel.isFavorite;
+    this.favoriteDao = new FavoriteDao(flag);
     this.state = {
       title: title,
       url: this.url,
       canGoBack: false,
-      isFavorite: false,
+      isFavorite: isFavorite,
     };
     this.backPress = new BackPressComponent({
       backPress: () => this.onBackPress(),
@@ -42,9 +48,18 @@ export default class DetailPage extends Component {
     }
   }
   favorite() {
+    const {projectModel, flag, callback} = this.params;
+    let isFavorite = (projectModel.isFavorite = !projectModel.isFavorite);
+    callback(isFavorite);
     this.setState({
-      isFavorite: !this.state.isFavorite,
+      isFavorite: isFavorite,
     });
+    FavoriteUtil.onFavorite(
+      this.favoriteDao,
+      projectModel.item,
+      isFavorite,
+      flag,
+    );
   }
   share() {}
   onNavigationStateChange(navigator) {

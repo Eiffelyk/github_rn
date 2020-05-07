@@ -1,6 +1,6 @@
 import Types from '../types';
 import DataStore, {FLAG_STORAGE} from '../../expand/dao/DataStore';
-import {handlerData} from '../ActionUtil';
+import {_projectModels, handlerData} from '../ActionUtil';
 
 /**
  * 刷新首页数据
@@ -9,7 +9,7 @@ import {handlerData} from '../ActionUtil';
  * @param pageSize
  * @returns {function(...[*]=)}
  */
-export function onTrendingRefresh(storeName, url, pageSize) {
+export function onTrendingRefresh(storeName, url, pageSize, favoriteDao) {
   return dispatch => {
     dispatch({type: Types.TRENDING_REFRESH, storeName: storeName});
     let dataStore = new DataStore();
@@ -22,6 +22,7 @@ export function onTrendingRefresh(storeName, url, pageSize) {
           storeName,
           data,
           pageSize,
+          favoriteDao,
         );
       })
       .catch(error => {
@@ -40,6 +41,7 @@ export function onTrendingLoadMore(
   pageSize,
   dataArray = [],
   callback,
+  favoriteDao,
 ) {
   return dispatch => {
     setTimeout(() => {
@@ -53,19 +55,20 @@ export function onTrendingLoadMore(
           storeName,
           error: 'no more 1',
           pageIndex: --pageIndex,
-          projectModes: dataArray,
         });
       } else {
         let max =
           pageSize * pageIndex > dataArray.length
             ? dataArray.length
             : pageSize * pageIndex;
-        dispatch({
-          type: Types.TRENDING_LOAD_MORE_SUCCESS,
-          storeName,
-          items: dataArray,
-          pageIndex,
-          projectModes: dataArray.slice(0, max),
+        _projectModels(dataArray.slice(0, max), favoriteDao, projectModels => {
+          dispatch({
+            type: Types.TRENDING_LOAD_MORE_SUCCESS,
+            storeName,
+            items: dataArray,
+            pageIndex,
+            projectModels: projectModels,
+          });
         });
       }
     }, 500);

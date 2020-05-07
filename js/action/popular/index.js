@@ -1,15 +1,16 @@
 import Types from '../types';
 import DataStore, {FLAG_STORAGE} from '../../expand/dao/DataStore';
-import {handlerData} from '../ActionUtil';
+import {_projectModels, handlerData} from '../ActionUtil';
 
 /**
  * 刷新首页数据
  * @param storeName
  * @param url
  * @param pageSize
+ * @param favoriteDao
  * @returns {function(...[*]=)}
  */
-export function onPopularRefresh(storeName, url, pageSize) {
+export function onPopularRefresh(storeName, url, pageSize, favoriteDao) {
   return dispatch => {
     dispatch({type: Types.POPULAR_REFRESH, storeName: storeName});
     let dataStore = new DataStore();
@@ -22,6 +23,7 @@ export function onPopularRefresh(storeName, url, pageSize) {
           storeName,
           data,
           pageSize,
+          favoriteDao,
         );
       })
       .catch(error => {
@@ -40,6 +42,7 @@ export function onPopularLoadMore(
   pageSize,
   dataArray = [],
   callback,
+  favoriteDao,
 ) {
   return dispatch => {
     setTimeout(() => {
@@ -53,19 +56,20 @@ export function onPopularLoadMore(
           storeName,
           error: 'no more 1',
           pageIndex: --pageIndex,
-          projectModes: dataArray,
         });
       } else {
         let max =
           pageSize * pageIndex > dataArray.length
             ? dataArray.length
             : pageSize * pageIndex;
-        dispatch({
-          type: Types.POPULAR_LOAD_MORE_SUCCESS,
-          storeName,
-          items: dataArray,
-          pageIndex,
-          projectModes: dataArray.slice(0, max),
+        _projectModels(dataArray.slice(0, max), favoriteDao, projectModels => {
+          dispatch({
+            type: Types.POPULAR_LOAD_MORE_SUCCESS,
+            storeName,
+            items: dataArray,
+            pageIndex,
+            projectModels: projectModels,
+          });
         });
       }
     }, 500);
