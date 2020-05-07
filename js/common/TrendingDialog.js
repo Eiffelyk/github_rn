@@ -16,8 +16,6 @@ export const timeSpans = [
   new TimeSpans('本周', 'since=weekly'),
   new TimeSpans('本月', 'since=monthly'),
 ];
-const STATUS_BAR_HEIGHT =
-  Platform.OS === 'ios' && DeviceInfo.isIPhoneX_deprecated ? 20 : 0; //状态栏的高度
 
 export default class TrendingDialog extends Component {
   state = {

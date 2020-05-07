@@ -14,7 +14,7 @@ const NAV_BAR_HEIGHT_ANDROID = 40; //导航栏在Android中的高度
 const NAV_BAR_HEIGHT =
   Platform.OS === 'ios' ? NAV_BAR_HEIGHT_IOS : NAV_BAR_HEIGHT_ANDROID;
 const STATUS_BAR_HEIGHT =
-  Platform.OS === 'ios' && DeviceInfo.isIPhoneX_deprecated ? 20 : 0; //状态栏的高度
+  Platform.OS === 'ios' && DeviceInfo.isIPhoneX_deprecated ? 30 : 10; //状态栏的高度
 const StatusBarShape = {
   barStyle: PropTypes.oneOf(['light-content', 'default']),
   hidden: PropTypes.boolean,
