@@ -9,6 +9,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {createAppContainer} from 'react-navigation';
 import {createBottomTabNavigator, BottomTabBar} from 'react-navigation-tabs';
 import {connect} from 'react-redux';
+import EventBus from 'react-native-event-bus';
+import EventType from '../util/EventType';
 
 const TABS = {
   PopularPage: {
@@ -74,7 +76,16 @@ class DynamicTabNavigator extends React.Component {
   }
   render() {
     const Tabs = this._tabNavigator();
-    return <Tabs />;
+    return (
+      <Tabs
+        onNavigationStateChange={(prevState, newState, action) => {
+          EventBus.getInstance().fireEvent(EventType.bottom_tab_select, {
+            from: prevState.index,
+            to: newState.index,
+          });
+        }}
+      />
+    );
   }
 }
 class TabBarComponent extends React.Component {

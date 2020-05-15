@@ -22,6 +22,8 @@ import NavigatorUtil from '../navigator/NavigatorUtil';
 import FavoriteDao from '../expand/dao/FavoriteDao';
 import {FLAG_STORAGE} from '../expand/dao/DataStore';
 import FavoriteUtil from '../util/FavoriteUtil';
+import EventBus from 'react-native-event-bus';
+import EventType from '../util/EventType';
 export const TRENDING_URL = 'https://github.com/trending/';
 const THEME_COLOR = '#F00';
 const EVENT_TYPE_TIME_SPAN_CHANGE = 'EVENT_TYPE_TIME_SPAN_CHANGE';
@@ -137,6 +139,7 @@ class TrendingTab extends Component {
     const {tabLabel, timeSpan} = this.props;
     this.storeName = tabLabel;
     this.timeSpan = timeSpan;
+    this.isFavoriteChanged = false;
   }
 
   componentDidMount() {
@@ -148,15 +151,37 @@ class TrendingTab extends Component {
         this.loadData(false);
       },
     );
+    EventBus.getInstance().addListener(
+      EventType.favorite_change_trending,
+      (this.favoriteChangeListener = () => {
+        this.isFavoriteChanged = true;
+      }),
+    );
+    EventBus.getInstance().addListener(
+      EventType.bottom_tab_select,
+      (this.bottomTabSelectListener = data => {
+        if (data.to === 1 && this.isFavoriteChanged) {
+          this.loadData(null, true);
+          this.isFavoriteChanged = false;
+        }
+      }),
+    );
   }
-  componentWillUnmount(): void {
+
+  componentWillUnmount() {
+    EventBus.getInstance().removeListener(this.favoriteChangeListener);
+    EventBus.getInstance().removeListener(this.bottomTabSelectListener);
     if (this.timeSpanDeviceEventEmitter) {
       this.timeSpanDeviceEventEmitter.remove();
     }
   }
 
-  loadData(loadMore) {
-    const {trendingRefresh, trendingLoadMore} = this.props;
+  loadData(loadMore, refreshFavorite) {
+    const {
+      trendingRefresh,
+      trendingLoadMore,
+      onFlushTrendingFavorite,
+    } = this.props;
     const store = this._store();
     const url = this.genFetchUrl(this.storeName);
     if (loadMore) {
@@ -168,6 +193,14 @@ class TrendingTab extends Component {
         callback => {
           this.toast.show('没数据了');
         },
+        favoriteDao,
+      );
+    } else if (refreshFavorite) {
+      onFlushTrendingFavorite(
+        this.storeName,
+        store.pageIndex,
+        pageSize,
+        store.items,
         favoriteDao,
       );
     } else {
@@ -211,7 +244,7 @@ class TrendingTab extends Component {
             favoriteDao,
             item,
             isFavorite,
-            FLAG_STORAGE.popular,
+            FLAG_STORAGE.trending,
           );
         }}
       />
@@ -232,7 +265,7 @@ class TrendingTab extends Component {
         <FlatList
           data={store.projectModels}
           renderItem={data => this.renderItem(data)}
-          keyExtractor={item => '' + item.item.full_name}
+          keyExtractor={item => '' + item.item.fullName}
           refreshControl={
             <RefreshControl
               title={'loading'}
@@ -285,6 +318,22 @@ const mapDispatchToProps = dispatch => ({
         pageSize,
         dataArray,
         callback,
+        favoriteDao,
+      ),
+    ),
+  onFlushTrendingFavorite: (
+    storeName,
+    pageIndex,
+    pageSize,
+    dataArray,
+    favoriteDao,
+  ) =>
+    dispatch(
+      actions.onFlushTrendingFavorite(
+        storeName,
+        pageIndex,
+        pageSize,
+        dataArray,
         favoriteDao,
       ),
     ),

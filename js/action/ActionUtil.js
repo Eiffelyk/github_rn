@@ -39,7 +39,10 @@ export async function _projectModels(showItems, favoriteDao, callback) {
   let projectModels = [];
   for (let i = 0, length = showItems.length; i < length; i++) {
     projectModels.push(
-      new ProjectModel(showItems[i], Util.checkFavorite(showItems[i], keys)),
+      new ProjectModel(
+        showItems[i],
+        Util.checkFavorite(favoriteDao.getFavoriteType(), showItems[i], keys),
+      ),
     );
   }
   doCallback(callback, projectModels);

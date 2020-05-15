@@ -1,4 +1,5 @@
 import Types from '../../action/types';
+import {Type} from 'react-native/ReactCommon/hermes/inspector/tools/msggen/src/Type';
 
 const defaultState = {};
 
@@ -66,6 +67,14 @@ export default function onAction(state = defaultState, action) {
           ...state[action.storeName],
           hiddenLoadingMore: true,
           pageIndex: action.pageIndex,
+        },
+      };
+    case Types.TRENDING_FLUSH_FAVORITE:
+      return {
+        ...state,
+        [action.storeName]: {
+          ...state[action.storeName],
+          projectModels: action.projectModels,
         },
       };
     default:

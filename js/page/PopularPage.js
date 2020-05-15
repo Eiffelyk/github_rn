@@ -18,6 +18,8 @@ import NavigatorUtil from '../navigator/NavigatorUtil';
 import FavoriteDao from '../expand/dao/FavoriteDao';
 import {FLAG_STORAGE} from '../expand/dao/DataStore';
 import FavoriteUtil from '../util/FavoriteUtil';
+import EventBus from 'react-native-event-bus';
+import EventType from '../util/EventType';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -87,14 +89,33 @@ class PopularTab extends Component {
     super(props);
     const {tabLabel} = this.props;
     this.storeName = tabLabel;
+    this.isFavoriteChanged = false;
   }
 
   componentDidMount() {
     this.loadData();
+    EventBus.getInstance().addListener(
+      EventType.favorite_change_popular,
+      (this.favoriteChangeListener = () => {
+        this.isFavoriteChanged = true;
+      }),
+    );
+    EventBus.getInstance().addListener(
+      EventType.bottom_tab_select,
+      (this.bottomTabSelectListener = data => {
+        if (data.to === 0 && this.isFavoriteChanged) {
+          this.loadData(null, true);
+        }
+      }),
+    );
+  }
+  componentWillUnmount() {
+    EventBus.getInstance().removeListener(this.favoriteChangeListener);
+    EventBus.getInstance().removeListener(this.bottomTabSelectListener);
   }
 
-  loadData(loadMore) {
-    const {popularRefresh, popularLoadMore} = this.props;
+  loadData(loadMore, refreshFavorite) {
+    const {popularRefresh, popularLoadMore, flushPopularFavorite} = this.props;
     const store = this._store();
     const url = this.genFetchUrl(this.storeName);
     if (loadMore) {
@@ -108,6 +129,15 @@ class PopularTab extends Component {
         },
         favoriteDao,
       );
+    } else if (refreshFavorite) {
+      flushPopularFavorite(
+        this.storeName,
+        store.pageIndex,
+        pageSize,
+        store.items,
+        favoriteDao,
+      );
+      this.isFavoriteChanged = false;
     } else {
       popularRefresh(this.storeName, url, pageSize, favoriteDao);
     }
@@ -219,6 +249,22 @@ const mapDispatchToProps = dispatch => ({
         pageSize,
         dataArray,
         callback,
+        favoriteDao,
+      ),
+    ),
+  flushPopularFavorite: (
+    storeName,
+    pageIndex,
+    pageSize,
+    dataArray,
+    favoriteDao,
+  ) =>
+    dispatch(
+      actions.onFlushPopularFavorite(
+        storeName,
+        pageIndex,
+        pageSize,
+        dataArray,
         favoriteDao,
       ),
     ),

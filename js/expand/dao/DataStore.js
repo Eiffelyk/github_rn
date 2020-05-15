@@ -45,7 +45,6 @@ export default class DataStore {
    */
   fetchDataFromNet(url, flag) {
     return new Promise((resolve, reject) => {
-      debugger;
       if (flag === FLAG_STORAGE.popular) {
         fetch(url)
           .then(response => {

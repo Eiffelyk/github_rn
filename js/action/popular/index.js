@@ -75,3 +75,25 @@ export function onPopularLoadMore(
     }, 500);
   };
 }
+export function onFlushPopularFavorite(
+  storeName,
+  pageIndex,
+  pageSize,
+  dataArray = [],
+  favoriteDao,
+) {
+  return dispatch => {
+    let max =
+      pageSize * pageIndex > dataArray.length
+        ? dataArray.length
+        : pageSize * pageIndex;
+    _projectModels(dataArray.slice(0, max), favoriteDao, projectModels => {
+      dispatch({
+        type: Types.POPULAR_FLUSH_FAVORITE,
+        storeName,
+        pageIndex,
+        projectModels: projectModels,
+      });
+    });
+  };
+}

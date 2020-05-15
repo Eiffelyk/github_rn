@@ -2,7 +2,11 @@ import AsynStorage from '@react-native-community/async-storage';
 const FAVORITE_ = 'favorite_';
 export default class FavoriteDao {
   constructor(type) {
+    this.favoriteType = type;
     this.favoriteKey = FAVORITE_ + type;
+  }
+  getFavoriteType() {
+    return this.favoriteType;
   }
   saveFavoriteItem(key, value) {
     AsynStorage.setItem(key, value, (error, result) => {
