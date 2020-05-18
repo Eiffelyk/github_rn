@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  Button,
+  Linking,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import NavigatorUtil from '../navigator/NavigatorUtil';
 import NavigationBar from '../common/NavigationBar';
 import {MORE_MENU} from '../common/MORE_MENU';
-import GlobalStyles from '../res/GlobalStyles';
+import GlobalStyles from '../res/style/GlobalStyles';
 import ViewUtil from '../util/ViewUtil';
 const THEME_COLOR = '#F00';
 class MyPage extends Component {
@@ -47,6 +47,32 @@ class MyPage extends Component {
         params.title = '教程';
         params.url = 'https://github.com/Eiffelyk/github_rn';
         break;
+      case MORE_MENU.About:
+        routerName = 'AboutPage';
+        break;
+      case MORE_MENU.About_Author:
+        routerName = 'AboutMePage';
+        break;
+      case MORE_MENU.Feedback:
+        // 本机应用
+        // 电话：Linking.openURL(`tel:${'10086'}`);
+        // 浏览器：Linking.openURL('http://www.baidu.com');
+        // 短信：Linking.openURL('smsto:10086');
+        // 邮箱：Linking.openURL('mailto:10000@qq. com');
+        // 地图：Linking.openURL('geo:37.2122 , 12.222');
+        const openUrl = 'mailto:eiffelyk@gmail.com';
+        Linking.canOpenURL(openUrl)
+          .then(support => {
+            if (support) {
+              Linking.openURL(openUrl);
+            } else {
+              console.log("Can't handle url:" + openUrl);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        break;
     }
     if (routerName) {
       NavigatorUtil.goPage(params, routerName);
@@ -66,8 +92,8 @@ class MyPage extends Component {
         title={'我的'}
         statusBar={statusBar}
         style={{backgroundColor: THEME_COLOR}}
-        leftButton={this.leftButton()}
-        rightButton={this.rightButton()}
+        // leftButton={this.leftButton()}
+        // rightButton={this.rightButton()}
       />
     );
     return (

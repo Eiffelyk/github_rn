@@ -7,6 +7,8 @@ import FetchDemoPage from '../page/FetchDemoPage';
 import AsyncStoreDemoPage from '../page/AsyncStoreDemoPage';
 import DataStoreDemoPage from '../page/DataStoreDemoPage';
 import WebviewPage from '../page/WebviewPage';
+import AboutPage from '../page/about/AboutPage';
+import AboutMePage from '../page/about/AboutMePage';
 
 const InitNavigator = createStackNavigator({
   WelcomePage: {
@@ -31,6 +33,18 @@ const MainNavigator = createStackNavigator({
   },
   WebviewPage: {
     screen: WebviewPage,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  AboutPage: {
+    screen: AboutPage,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  AboutMePage: {
+    screen: AboutMePage,
     navigationOptions: {
       headerShown: false,
     },
