@@ -1,11 +1,21 @@
 import React, {Component} from 'react';
-import {View, Text, Button, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import {connect} from 'react-redux';
 import actions from '../action';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import NavigatorUtil from '../navigator/NavigatorUtil';
 import NavigationBar from '../common/NavigationBar';
+import {MORE_MENU} from '../common/MORE_MENU';
+import GlobalStyles from '../res/GlobalStyles';
+import ViewUtil from '../util/ViewUtil';
 const THEME_COLOR = '#F00';
 class MyPage extends Component {
   leftButton() {
@@ -28,6 +38,23 @@ class MyPage extends Component {
     );
   }
   rightButtonOnPress() {}
+  onClick(menu) {
+    let routerName,
+      params = {};
+    switch (menu) {
+      case MORE_MENU.Tutorial:
+        routerName = 'WebviewPage';
+        params.title = '教程';
+        params.url = 'https://github.com/Eiffelyk/github_rn';
+        break;
+    }
+    if (routerName) {
+      NavigatorUtil.goPage(params, routerName);
+    }
+  }
+  getItem(menu) {
+    return ViewUtil.getMenuItem(() => this.onClick(menu), menu);
+  }
   render() {
     const {navigation} = this.props;
     let statusBar = {
@@ -44,49 +71,60 @@ class MyPage extends Component {
       />
     );
     return (
-      <View style={styles.container}>
+      <View style={GlobalStyles.root_container}>
         {NavigationBarA}
-        <Text style={styles.welcome}>MyPage</Text>
-        <Button
-          title={'修改主题灰色'}
-          onPress={() => this.props.onThemeChange('gray')}
-        />
-        <Text
-          onPress={() => {
-            NavigatorUtil.goPage({}, 'DetailPage');
-          }}>
-          PopularTab
-        </Text>
+        <ScrollView>
+          <TouchableOpacity
+            style={styles.about}
+            onPress={() => this.onClick(MORE_MENU.About)}>
+            <View style={styles.about_left}>
+              <Ionicons
+                name={MORE_MENU.About.icon}
+                size={40}
+                style={{marginRight: 10}}
+              />
+              <Text>馋猫</Text>
+            </View>
+            <Ionicons
+              name={'ios-arrow-forward'}
+              size={16}
+              style={{marginRight: 10, alignSelf: 'center'}}
+            />
+          </TouchableOpacity>
+          <View style={GlobalStyles.line} />
+          {this.getItem(MORE_MENU.Tutorial)}
+          {/*趋势管理*/}
+          <Text style={styles.groupTitle}>趋势管理</Text>
+          {/*自定义语言*/}
+          {this.getItem(MORE_MENU.Custom_Language)}
+          {/*语言排序*/}
+          <View style={GlobalStyles.line} />
+          {this.getItem(MORE_MENU.Sort_Language)}
 
-        <Text
-          onPress={() => {
-            NavigatorUtil.goPage({}, 'FetchDemoPage');
-          }}>
-          Fetch Demo
-        </Text>
-        <Text
-          onPress={() => {
-            NavigatorUtil.goPage({}, 'AsyncStoreDemoPage');
-          }}>
-          AsyncStoreDemoPage Demo
-        </Text>
-        <Text
-          onPress={() => {
-            NavigatorUtil.goPage({}, 'DataStoreDemoPage');
-          }}>
-          DataStoreDemoPage Demo
-        </Text>
-        <Button
-          title={'修改成蓝色'}
-          onPress={() =>
-            navigation.setParams({
-              theme: {
-                tintColor: 'blue',
-                updateTime: new Date().getTime(),
-              },
-            })
-          }
-        />
+          {/*最热管理*/}
+          <Text style={styles.groupTitle}>最热管理</Text>
+          {/*自定义标签*/}
+          {this.getItem(MORE_MENU.Custom_Key)}
+          {/*标签排序*/}
+          <View style={GlobalStyles.line} />
+          {this.getItem(MORE_MENU.Sort_Key)}
+          {/*标签移除*/}
+          <View style={GlobalStyles.line} />
+          {this.getItem(MORE_MENU.Remove_Key)}
+
+          {/*设置*/}
+          <Text style={styles.groupTitle}>设置</Text>
+          {/*自定义主题*/}
+          {this.getItem(MORE_MENU.Custom_Theme)}
+          {/*关于作者*/}
+          <View style={GlobalStyles.line} />
+          {this.getItem(MORE_MENU.About_Author)}
+          <View style={GlobalStyles.line} />
+          {/*反馈*/}
+          {this.getItem(MORE_MENU.Feedback)}
+          <View style={GlobalStyles.line} />
+          {this.getItem(MORE_MENU.CodePush)}
+        </ScrollView>
       </View>
     );
   }
@@ -107,9 +145,24 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingLeft: 12,
   },
-  welcome: {
-    fontSize: 40,
-    color: '#00f',
+  about: {
+    backgroundColor: 'white',
+    padding: 10,
+    height: 90,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  about_left: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  groupTitle: {
+    color: 'gray',
+    fontSize: 12,
+    marginTop: 10,
+    marginBottom: 5,
+    marginLeft: 10,
   },
 });
 
