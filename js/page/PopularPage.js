@@ -20,26 +20,31 @@ import {FLAG_STORAGE} from '../expand/dao/DataStore';
 import FavoriteUtil from '../util/FavoriteUtil';
 import EventBus from 'react-native-event-bus';
 import EventType from '../util/EventType';
+import {FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
 const THEME_COLOR = '#F00';
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.popular);
-export default class PopularPage extends Component {
+class PopularPage extends Component {
   constructor(props) {
     super(props);
-    this.tabNames = ['Java', 'Android', 'iOS', 'React', 'React Native', 'PHP'];
+    const {onLoadLanguage} = this.props;
+    onLoadLanguage(FLAG_LANGUAGE.flag_key);
   }
 
   _getTabs() {
+    const {keys} = this.props;
     const tabs = {};
-    this.tabNames.forEach((item, index) => {
-      tabs['tab' + index] = {
-        screen: props => <PopularTabPage {...props} tabLabel={item} />,
-        navigationOptions: {
-          title: item,
-        },
-      };
+    keys.forEach((item, index) => {
+      if (item.checked) {
+        tabs['tab' + index] = {
+          screen: props => <PopularTabPage {...props} tabLabel={item.name} />,
+          navigationOptions: {
+            title: item.name,
+          },
+        };
+      }
     });
     return tabs;
   }
@@ -62,7 +67,8 @@ export default class PopularPage extends Component {
   }
 
   render() {
-    const TopBar = this._TopNavigator();
+    const {keys} = this.props;
+    const TopBar = keys.length ? this._TopNavigator() : null;
     let statusBar = {
       backgroundColor: THEME_COLOR,
       barStyle: 'light-content',
@@ -78,11 +84,21 @@ export default class PopularPage extends Component {
     return (
       <View style={styles.container}>
         {NavigationBarA}
-        <TopBar />
+        {TopBar && <TopBar />}
       </View>
     );
   }
 }
+const mapPopularStateToProps = state => ({
+  keys: state.language.keys,
+});
+const mapPopularDispatchToProps = dispatch => ({
+  onLoadLanguage: flag => dispatch(actions.onLoadLanguage(flag)),
+});
+export default connect(
+  mapPopularStateToProps,
+  mapPopularDispatchToProps,
+)(PopularPage);
 const pageSize = 10;
 class PopularTab extends Component {
   constructor(props) {
