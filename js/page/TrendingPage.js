@@ -34,7 +34,6 @@ class TrendingPage extends Component {
   constructor(props) {
     super(props);
     const {onLoadLanguage} = this.props;
-    debugger;
     onLoadLanguage(FLAG_LANGUAGE.flag_language);
     this.state = {
       timeSpan: timeSpans[0],

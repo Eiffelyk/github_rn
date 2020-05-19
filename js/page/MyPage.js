@@ -16,6 +16,7 @@ import NavigationBar from '../common/NavigationBar';
 import {MORE_MENU} from '../common/MORE_MENU';
 import GlobalStyles from '../res/style/GlobalStyles';
 import ViewUtil from '../util/ViewUtil';
+import {FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
 const THEME_COLOR = '#F00';
 class MyPage extends Component {
   leftButton() {
@@ -72,6 +73,16 @@ class MyPage extends Component {
           .catch(err => {
             console.log(err);
           });
+        break;
+      case MORE_MENU.Custom_Key:
+      case MORE_MENU.Custom_Language:
+      case MORE_MENU.Remove_Key:
+        routerName = 'CustomKeyPage';
+        params.isRemoveKey = menu === MORE_MENU.Remove_Key;
+        params.flag =
+          menu === MORE_MENU.Custom_Language
+            ? FLAG_LANGUAGE.flag_language
+            : FLAG_LANGUAGE.flag_key;
         break;
     }
     if (routerName) {

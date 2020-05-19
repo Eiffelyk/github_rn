@@ -13,4 +13,15 @@ export default class ArrayUtils {
     }
     return true;
   }
+
+  static updateArray(changeValues, data) {
+    for (let i = 0, length = changeValues.length; i < length; i++) {
+      let temp = changeValues[i];
+      if (temp === data) {
+        changeValues.splice(i, 1);
+        return;
+      }
+    }
+    changeValues.push(data);
+  }
 }
