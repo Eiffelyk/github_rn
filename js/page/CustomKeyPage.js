@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ScrollView, StyleSheet} from 'react-native';
+import {View, ScrollView, StyleSheet, Alert} from 'react-native';
 import CheckBox from 'react-native-check-box';
 import {connect} from 'react-redux';
 import actions from '../action/index';
@@ -61,9 +61,45 @@ class CustomKeyPage extends Component {
     return true;
   }
   onBack() {
+    if (this.changeValues.length > 0) {
+      Alert.alert('提示', '是否保存修改？', [
+        {
+          text: '否',
+          onPress: () => {
+            NavigatorUtil.goBack(this.props.navigation);
+          },
+        },
+        {
+          text: '是',
+          onPress: () => {
+            this.onSave();
+          },
+        },
+      ]);
+    } else {
+      NavigatorUtil.goBack(this.props.navigation);
+    }
+  }
+  onSave() {
+    if (!this.changeValues.length > 0) {
+      NavigatorUtil.goBack(this.props.navigation);
+      return;
+    }
+    let keys;
+    if (this.isRemoveKey) {
+      for (let i = 0, length = this.changeValues.length; i < length; i++) {
+        ArrayUtils.removeArray(
+          (keys = CustomKeyPage._key(this.props, true)),
+          this.changeValues[i],
+          'name',
+        );
+      }
+    }
+    this.languageDao.save(keys || this.state.keys);
+    const {onLoadLanguage} = this.props;
+    onLoadLanguage(this.params.flag);
     NavigatorUtil.goBack(this.props.navigation);
   }
-  onSave() {}
   renderItem() {
     let dataArray = this.state.keys;
     if (!dataArray || dataArray.length === 0) {

@@ -24,4 +24,20 @@ export default class ArrayUtils {
     }
     changeValues.push(data);
   }
+
+  static removeArray(keys, changeValue, name) {
+    if (!keys) {
+      return;
+    }
+    for (let i = 0, length = keys.length; i < length; i++) {
+      const val = keys[i];
+      if (
+        changeValue === val ||
+        (val && val[name] && val[name] === changeValue[name])
+      ) {
+        keys.splice(i, 1);
+      }
+    }
+    return keys;
+  }
 }
