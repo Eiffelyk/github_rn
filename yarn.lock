@@ -1164,6 +1164,11 @@
     lodash.unescape "4.0.1"
     semver "5.5.0"
 
+GitHubTrending@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npm.taobao.org/GitHubTrending/download/GitHubTrending-5.0.0.tgz#d272acf5b134dc0dab24a8877577223462054809"
+  integrity sha1-0nKs9bE03A2rJKiHdXciNGIFSAk=
+
 abab@^2.0.0:
   version "2.0.3"
   resolved "https://registry.npm.taobao.org/abab/download/abab-2.0.3.tgz#623e2075e02eb2d3f2475e49f99c91846467907a"
@@ -2291,15 +2296,15 @@ escape-html@~1.0.3:
   resolved "https://registry.npm.taobao.org/escape-html/download/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
   integrity sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
 
+escape-string-regexp@2.0.0, escape-string-regexp@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/escape-string-regexp/download/escape-string-regexp-2.0.0.tgz?cache=0&sync_timestamp=1586277009115&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fescape-string-regexp%2Fdownload%2Fescape-string-regexp-2.0.0.tgz#a30304e99daa32e23b2fd20f51babd07cffca344"
+  integrity sha1-owME6Z2qMuI7L9IPUbq9B8/8o0Q=
+
 escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.npm.taobao.org/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
-
-escape-string-regexp@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npm.taobao.org/escape-string-regexp/download/escape-string-regexp-2.0.0.tgz?cache=0&sync_timestamp=1586277009115&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fescape-string-regexp%2Fdownload%2Fescape-string-regexp-2.0.0.tgz#a30304e99daa32e23b2fd20f51babd07cffca344"
-  integrity sha1-owME6Z2qMuI7L9IPUbq9B8/8o0Q=
 
 escodegen@^1.9.1:
   version "1.14.1"
@@ -3181,7 +3186,7 @@ inquirer@^7.0.0:
     strip-ansi "^6.0.0"
     through "^2.3.6"
 
-invariant@^2.2.4:
+invariant@2.2.4, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.npm.taobao.org/invariant/download/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha1-YQ88ksk1nOHbYW5TgAjSP/NRWOY=
@@ -5038,7 +5043,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.4"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.7, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.npm.taobao.org/prop-types/download/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha1-UsQedbjIfnK52TYOAga5ncv/psU=
@@ -5107,6 +5112,32 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.npm.taobao.org/react-lifecycles-compat/download/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha1-TxonOv38jzSIqMUWv9p4+HI1I2I=
 
+react-native-check-box@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.npm.taobao.org/react-native-check-box/download/react-native-check-box-2.1.7.tgz#f349d3505a13c15d19949ec4cec40c7adc4f3626"
+  integrity sha1-80nTUFoTwV0ZlJ7EzsQMetxPNiY=
+  dependencies:
+    prop-types "^15.5.7"
+
+react-native-drag-sort@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npm.taobao.org/react-native-drag-sort/download/react-native-drag-sort-2.1.1.tgz#a47c69deedf15e2e47af27cca8f684ef0600145d"
+  integrity sha1-pHxp3u3xXi5HryfMqPaE7wYAFF0=
+
+react-native-easy-toast@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npm.taobao.org/react-native-easy-toast/download/react-native-easy-toast-1.2.0.tgz#0f70bcb99e3306cda4800c244bfb4a67d42276ed"
+  integrity sha1-D3C8uZ4zBs2kgAwkS/tKZ9Qidu0=
+  dependencies:
+    prop-types "^15.5.10"
+
+react-native-event-bus@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/react-native-event-bus/download/react-native-event-bus-1.0.0.tgz#e193b17bb8639b623f1d72e8596e0cd8635b59d1"
+  integrity sha1-4ZOxe7hjm2I/HXLoWW4M2GNbWdE=
+  dependencies:
+    prop-types "^15.5.7"
+
 react-native-gesture-handler@^1.6.1:
   version "1.6.1"
   resolved "https://registry.npm.taobao.org/react-native-gesture-handler/download/react-native-gesture-handler-1.6.1.tgz#678e2dce250ed66e93af409759be22cd6375dd17"
@@ -5121,6 +5152,13 @@ react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
   resolved "https://registry.npm.taobao.org/react-native-iphone-x-helper/download/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha1-ZF4v+7tJ6AhEu0y740oSb9oeZ3I=
+
+react-native-parallax-scroll-view@^0.21.3:
+  version "0.21.3"
+  resolved "https://registry.npm.taobao.org/react-native-parallax-scroll-view/download/react-native-parallax-scroll-view-0.21.3.tgz#d956ad224ce3b0a2725b80574bcbf688bbeda14e"
+  integrity sha1-2VatIkzjsKJyW4BXS8v2iLvtoU4=
+  dependencies:
+    prop-types "^15.6.0"
 
 react-native-reanimated@^1.7.1:
   version "1.8.0"
@@ -5161,6 +5199,14 @@ react-native-vector-icons@^6.6.0:
     lodash "^4.0.0"
     prop-types "^15.6.2"
     yargs "^13.2.2"
+
+react-native-webview@^9.3.0:
+  version "9.4.0"
+  resolved "https://registry.npm.taobao.org/react-native-webview/download/react-native-webview-9.4.0.tgz#108da34a6c7e1c032dcabc942b7e4947ca1d8028"
+  integrity sha1-EI2jSmx+HAMtyryUK35JR8odgCg=
+  dependencies:
+    escape-string-regexp "2.0.0"
+    invariant "2.2.4"
 
 react-native@0.62.1:
   version "0.62.1"

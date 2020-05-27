@@ -84,6 +84,14 @@ class MyPage extends Component {
             ? FLAG_LANGUAGE.flag_language
             : FLAG_LANGUAGE.flag_key;
         break;
+      case MORE_MENU.Sort_Key:
+        routerName = 'SortKeyPage';
+        params.flag = FLAG_LANGUAGE.flag_key;
+        break;
+      case MORE_MENU.Sort_Language:
+        routerName = 'SortKeyPage';
+        params.flag = FLAG_LANGUAGE.flag_language;
+        break;
     }
     if (routerName) {
       NavigatorUtil.goPage(params, routerName);

@@ -40,4 +40,15 @@ export default class ArrayUtils {
     }
     return keys;
   }
+
+  static clone(from) {
+    if (!from) {
+      return [];
+    }
+    let newArray = [];
+    for (let i = 0, l = from.length; i < l; i++) {
+      newArray[i] = from[i];
+    }
+    return newArray;
+  }
 }
