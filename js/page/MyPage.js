@@ -17,7 +17,6 @@ import {MORE_MENU} from '../common/MORE_MENU';
 import GlobalStyles from '../res/style/GlobalStyles';
 import ViewUtil from '../util/ViewUtil';
 import {FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
-const THEME_COLOR = '#F00';
 class MyPage extends Component {
   leftButton() {
     return (
@@ -40,8 +39,10 @@ class MyPage extends Component {
   }
   rightButtonOnPress() {}
   onClick(menu) {
+    const {theme} = this.props;
     let routerName,
       params = {};
+    params.theme = theme;
     switch (menu) {
       case MORE_MENU.Tutorial:
         routerName = 'WebviewPage';
@@ -92,25 +93,34 @@ class MyPage extends Component {
         routerName = 'SortKeyPage';
         params.flag = FLAG_LANGUAGE.flag_language;
         break;
+      case MORE_MENU.Custom_Theme:
+        const {onShowThemeView} = this.props;
+        onShowThemeView(true);
+        break;
     }
     if (routerName) {
       NavigatorUtil.goPage(params, routerName);
     }
   }
   getItem(menu) {
-    return ViewUtil.getMenuItem(() => this.onClick(menu), menu);
+    const {theme} = this.props;
+    return ViewUtil.getMenuItem(
+      () => this.onClick(menu),
+      menu,
+      theme.themeColor,
+    );
   }
   render() {
-    const {navigation} = this.props;
+    const {theme} = this.props;
     let statusBar = {
-      backgroundColor: THEME_COLOR,
+      backgroundColor: theme.themeColor,
       barStyle: 'light-content',
     };
     let NavigationBarA = (
       <NavigationBar
         title={'我的'}
         statusBar={statusBar}
-        style={{backgroundColor: THEME_COLOR}}
+        style={theme.styles.navBar}
         // leftButton={this.leftButton()}
         // rightButton={this.rightButton()}
       />
@@ -126,14 +136,18 @@ class MyPage extends Component {
               <Ionicons
                 name={MORE_MENU.About.icon}
                 size={40}
-                style={{marginRight: 10}}
+                style={{marginRight: 10, color: theme.themeColor}}
               />
               <Text>馋猫</Text>
             </View>
             <Ionicons
               name={'ios-arrow-forward'}
               size={16}
-              style={{marginRight: 10, alignSelf: 'center'}}
+              style={{
+                marginRight: 10,
+                alignSelf: 'center',
+                color: theme.themeColor,
+              }}
             />
           </TouchableOpacity>
           <View style={GlobalStyles.line} />
@@ -210,12 +224,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
 });
-
+const mapStateToProps = state => ({
+  theme: state.theme.theme,
+});
 const mapDispatchToProps = dispatch => ({
-  onThemeChange: theme => dispatch(actions.onThemeChange(theme)),
+  onShowThemeView: theme => dispatch(actions.onShowThemeView(theme)),
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(MyPage);

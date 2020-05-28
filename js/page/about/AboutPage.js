@@ -6,7 +6,6 @@ import {MORE_MENU} from '../../common/MORE_MENU';
 import GlobalStyles from '../../res/style/GlobalStyles';
 import config from '../../res/data/config';
 import NavigatorUtil from '../../navigator/NavigatorUtil';
-const THEME_COLOR = '#F00';
 export default class AboutPage extends Component<Props> {
   constructor(props) {
     super(props);
@@ -67,7 +66,11 @@ export default class AboutPage extends Component<Props> {
     }
   }
   getItem(menu) {
-    return ViewUtil.getMenuItem(() => this.onClick(menu), menu, THEME_COLOR);
+    return ViewUtil.getMenuItem(
+      () => this.onClick(menu),
+      menu,
+      this.params.theme.themeColor,
+    );
   }
   render() {
     const content = (

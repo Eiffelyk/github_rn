@@ -2,12 +2,10 @@ import React, {Component} from 'react';
 import {Linking, View, Clipboard} from 'react-native';
 import AboutCommon, {FLAG_ABOUT} from './AboutCommon';
 import ViewUtil from '../../util/ViewUtil';
-import {MORE_MENU} from '../../common/MORE_MENU';
 import GlobalStyles from '../../res/style/GlobalStyles';
 import config from '../../res/data/config';
 import NavigatorUtil from '../../navigator/NavigatorUtil';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const THEME_COLOR = '#F00';
 export default class AboutMePage extends Component<Props> {
   constructor(props) {
     super(props);
@@ -67,7 +65,7 @@ export default class AboutMePage extends Component<Props> {
         this.setState({[key]: !this.state[key]});
       },
       data.name,
-      THEME_COLOR,
+      this.params.theme.themeColor,
       Ionicons,
       data.icon,
       isShow ? 'ios-arrow-up' : 'ios-arrow-down',
@@ -87,7 +85,7 @@ export default class AboutMePage extends Component<Props> {
           {ViewUtil.getSettingItem(
             () => this.onClick(dic[i]),
             title,
-            THEME_COLOR,
+            this.params.theme.themeColor,
           )}
           <View style={GlobalStyles.line} />
         </View>,

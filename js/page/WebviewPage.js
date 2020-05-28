@@ -61,6 +61,7 @@ export default class WebviewPage extends Component {
     });
   }
   render() {
+    const {theme} = this.props.navigation.state.params;
     const titleStyle = this.state.title.length > 20 ? {paddingRight: 30} : null;
     return (
       <View style={styles.container}>
@@ -68,6 +69,7 @@ export default class WebviewPage extends Component {
           title={this.state.title}
           titleLayoutStyle={titleStyle}
           leftButton={ViewUtil.getLeftBackButton(() => this.back())}
+          style={theme.styles.navBar}
         />
         <WebView
           style={{flex: 1, backgroundColor: '#0ff'}}

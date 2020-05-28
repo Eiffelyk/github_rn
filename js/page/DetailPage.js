@@ -6,14 +6,14 @@ import NavigatorUtil from '../navigator/NavigatorUtil';
 import WebView from 'react-native-webview';
 import BackPressComponent from '../common/BackPressComponent';
 import FavoriteDao from '../expand/dao/FavoriteDao';
-import {FLAG_STORAGE} from '../expand/dao/DataStore';
 import FavoriteUtil from '../util/FavoriteUtil';
 const TRENDING_URL = 'https://github.com/';
 export default class DetailPage extends Component {
   constructor(props) {
     super(props);
     this.params = this.props.navigation.state.params;
-    const {projectModel, flag} = this.params;
+    const {projectModel, flag, theme} = this.params;
+    this.theme = theme;
     this.url =
       projectModel.item.html_url || TRENDING_URL + projectModel.item.fullName;
     const title = projectModel.item.full_name || projectModel.item.fullName;
@@ -76,6 +76,7 @@ export default class DetailPage extends Component {
           titleLayoutStyle={titleStyle}
           leftButton={ViewUtil.getLeftBackButton(() => this.back())}
           rightButton={this.renderRightButton()}
+          style={this.theme.styles.navBar}
         />
         <WebView
           style={{flex: 1, backgroundColor: '#0ff'}}

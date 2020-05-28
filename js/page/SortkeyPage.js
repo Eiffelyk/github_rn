@@ -17,7 +17,6 @@ import ViewUtil from '../util/ViewUtil';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ArrayUtils from '../util/ArrayUtils';
 import {DragSortableView} from 'react-native-drag-sort';
-const THEME_COLOR = '#F00';
 type Props = {};
 const {width} = Dimensions.get('window');
 
@@ -173,7 +172,7 @@ class SortKeyPage extends Component<Props> {
         <MaterialCommunityIcons
           name={'sort'}
           size={16}
-          style={{marginRight: 10, color: THEME_COLOR}}
+          style={{marginRight: 10, color: this.params.theme.themeColor}}
         />
         <Text style={styles.txt}>{item.name}</Text>
       </View>
@@ -187,15 +186,16 @@ class SortKeyPage extends Component<Props> {
         ? '语言排序'
         : '标签排序';
     let statusBar = {
-      backgroundColor: THEME_COLOR,
+      backgroundColor: theme.themeColor,
       barStyle: 'light-content',
     };
     let navigationBar = (
       <NavigationBar
         title={title}
         leftButton={ViewUtil.getLeftBackButton(() => this.onBack())}
-        style={statusBar}
+        statusBar={statusBar}
         rightButton={ViewUtil.getRightButton('保存', () => this.onSave())}
+        style={theme.styles.navBar}
       />
     );
 

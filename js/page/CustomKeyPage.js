@@ -10,8 +10,6 @@ import ViewUtil from '../util/ViewUtil';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import NavigatorUtil from '../navigator/NavigatorUtil';
 import ArrayUtils from '../util/ArrayUtils';
-
-const THEME_COLOR = '#F00';
 class CustomKeyPage extends Component {
   constructor(props) {
     super(props);
@@ -134,7 +132,7 @@ class CustomKeyPage extends Component {
         name={checked ? 'ios-checkbox' : 'md-square-outline'}
         size={20}
         style={{
-          color: THEME_COLOR,
+          color: this.params.theme.themeColor,
         }}
       />
     );
@@ -157,7 +155,7 @@ class CustomKeyPage extends Component {
       this.params.flag === FLAG_LANGUAGE.flag_language ? '自定义语言' : title;
     let rightButtonText = this.isRemoveKey ? '移除' : '保存';
     let statusBar = {
-      backgroundColor: THEME_COLOR,
+      backgroundColor: this.params.theme.themeColor,
       barStyle: 'light-content',
     };
     let NavigationBarA = (
@@ -169,7 +167,7 @@ class CustomKeyPage extends Component {
         rightButton={ViewUtil.getRightButton(rightButtonText, () =>
           this.onSave(),
         )}
-        style={{backgroundColor: THEME_COLOR}}
+        style={this.params.theme.styles.navBar}
       />
     );
     return (
