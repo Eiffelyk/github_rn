@@ -11,6 +11,7 @@ import AboutPage from '../page/about/AboutPage';
 import AboutMePage from '../page/about/AboutMePage';
 import CustomKeyPage from '../page/CustomKeyPage';
 import SortKeyPage from '../page/SortkeyPage';
+import SearchPage from '../page/SearchPage';
 
 const InitNavigator = createStackNavigator({
   WelcomePage: {
@@ -29,6 +30,12 @@ const MainNavigator = createStackNavigator({
   },
   DetailPage: {
     screen: DetailPage,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  SearchPage: {
+    screen: SearchPage,
     navigationOptions: {
       headerShown: false,
     },

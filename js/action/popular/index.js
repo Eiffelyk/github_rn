@@ -54,7 +54,7 @@ export function onPopularLoadMore(
         dispatch({
           type: Types.POPULAR_LOAD_MORE_FAIL,
           storeName,
-          error: 'no more 1',
+          error: 'no more',
           pageIndex: --pageIndex,
         });
       } else {

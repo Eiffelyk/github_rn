@@ -5,6 +5,7 @@ import {
   FlatList,
   StyleSheet,
   RefreshControl,
+  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
@@ -21,7 +22,8 @@ import FavoriteUtil from '../util/FavoriteUtil';
 import EventBus from 'react-native-event-bus';
 import EventType from '../util/EventType';
 import {FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
-
+import NavigationUtil from '../navigator/NavigatorUtil';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.popular);
@@ -68,7 +70,27 @@ class PopularPage extends Component {
       }),
     );
   }
-
+  renderRightButton() {
+    const {theme} = this.props;
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          NavigationUtil.goPage({theme}, 'SearchPage');
+        }}>
+        <View style={{padding: 5, marginRight: 8}}>
+          <Ionicons
+            name={'ios-search'}
+            size={24}
+            style={{
+              marginRight: 8,
+              alignSelf: 'center',
+              color: 'white',
+            }}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  }
   render() {
     const {keys, theme} = this.props;
     const TopBar = keys.length ? this._TopNavigator() : null;
@@ -82,6 +104,7 @@ class PopularPage extends Component {
         title={'最热'}
         statusBar={statusBar}
         style={theme.styles.navBar}
+        rightButton={this.renderRightButton()}
       />
     );
     return (
