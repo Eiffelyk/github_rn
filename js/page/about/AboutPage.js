@@ -31,6 +31,7 @@ export default class AboutPage extends Component<Props> {
   onClick(menu) {
     let routerName,
       params = {};
+    params.theme = this.params.theme;
     switch (menu) {
       case MORE_MENU.Tutorial:
         routerName = 'WebviewPage';
